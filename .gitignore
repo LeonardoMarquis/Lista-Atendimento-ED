@@ -1,0 +1,9 @@
+# para pastas: apena uma / no final do nome da pasta, ignora todas as pastas 
+# com esse nome, indepentente de onde elas estiverem dentro da pasta aberta
+# na ide
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+*.pdf
