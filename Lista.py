@@ -19,6 +19,9 @@ class Lista:
         
         self.quant_normal = 0
 
+        self.total_atendidos_prioridade = 0
+        self.total_atendidos_normal = 0
+
     
     def inserir(self, nome, prioridade = False):
         novo = Node(nome, prioridade)
@@ -59,8 +62,6 @@ class Lista:
                 passado = atual
                 atual = atual.prox
             
-
-            
             # Se nao tm mais prioridades na lista, retorna e avisa
 
             if not atual:
@@ -73,22 +74,19 @@ class Lista:
                     atual = atual.prox
 
                 if atual:           # se tem normal encontrou ele aqui
-                    self.quant_normal -= 1
+                    self.quant_normal -=1
+                    self.total_atendidos_normal +=1            #a
                     self.quant_atendido_prioridade = 0          # Reseta o contador para a proxima vez que tiverr prioridad
-
 
                 else:                           
                     return
                 
-
             else:               # Encontrou uma pessoa de prioridade
                 self.quant_prioridade -= 1
-                self.quant_atendido_prioridade += 1
+                self.quant_atendido_prioridade +=1
+                self.total_atendidos_prioridade +=1            #a
         
-
         else:                   # Caso contrario, atende uma pessoa normal
-            
-
             # acha o primeiro cliente normal da fila
             while atual and atual.prioridade:
                 passado = atual
@@ -107,7 +105,7 @@ class Lista:
                 if atual:                   # Encontrou um prioridade
                     self.quant_prioridade -= 1
                     self.quant_atendido_prioridade += 1
-
+                    self.total_atendidos_prioridade += 1        #a
 
                 else:
                     print("\nFila vazia!")
@@ -115,10 +113,8 @@ class Lista:
 
             else: # Encontrou uma pessoa normal para atender
                 self.quant_normal -= 1
+                self.total_atendidos_normal += 1                #a
                 self.quant_atendido_prioridade = 0 # Reseta o contador de prioridade, porque atendeu 1u normal
-
-
-
 
         # aqui e a parte de remocoes da lista
 
@@ -135,6 +131,7 @@ class Lista:
 
         print(f"{atual} ; Atendido")
 
+        
 
     def listar(self):
         if not self.inicio:
@@ -151,3 +148,13 @@ class Lista:
 
     def zerada(self):
         return self.inicio is None
+    
+
+
+
+    def estatisticas_finais(self):  
+        print("\n-----===-------====---=======--=-")
+        print("\n-Estatísticas dos Atendimentos-")
+        print(f"Pessoas com prioridade atendidas: {self.total_atendidos_prioridade}")
+        print(f"Pessoas normais atendidas: {self.total_atendidos_normal}")
+        print("\n-------====-----===------------=====---")

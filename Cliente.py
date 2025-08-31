@@ -37,6 +37,7 @@ def main():
         elif op == 0:
             #l.listar()
             if l.zerada():
+                l.estatisticas_finais()
                 print("\nEncerrando.")
 
                 break
@@ -50,12 +51,3 @@ def main():
 if __name__ == "__main__":
     main()
 
-
-class Node:     # o chamado nó da lista encadeada, vai representar a pessoa
-    def __init__(self, nome, prioridade = False):   # para receber o nome, e o outro como booleano, true ou false
-        self.nome = nome
-        self.prioridade = prioridade
-        self.prox = None
-
-    def __str__(self):
-        return f"{self.nome} ({'Prioridade' if self.prioridade else 'Normal'})"
