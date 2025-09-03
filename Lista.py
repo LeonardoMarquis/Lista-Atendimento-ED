@@ -22,6 +22,10 @@ class Lista:
         self.total_atendidos_prioridade = 0
         self.total_atendidos_normal = 0
 
+        # E para controlar o n de normais atendidos desde a última prioridade
+        # Começa em 2 para forcar logo o primeiro atendimento ser de prioridade se existir
+        self.normais_desde_ultima_prioridade = 2
+
     
     def inserir(self, nome, prioridade = False):
         novo = Node(nome, prioridade)
@@ -51,70 +55,70 @@ class Lista:
         atual = self.inicio 
         passado = None
         
-        # Encontra a pessoa a ser atendida de acordo com a regra de prioridade
-        # a regra e: 2 prioridades, depois 1 normal
 
-        if self.quant_atendido_prioridade < 2 and self.quant_prioridade > 0:
+        # Acha a pessoa a ser atendida de acordo com a regra de prioridade, 1 com, 2 sem
+        # se faltar normal atende prioridade se faltar prioridade, segue normal
+        vai_de_prioridade = (self.normais_desde_ultima_prioridade >= 2 and self.quant_prioridade > 0)
 
-            # Prioridade para atendimento no maximo 2 prioridades seguidas
 
+        if vai_de_prioridade:
+            # procurar a primeira prioridade
             while atual and not atual.prioridade:
                 passado = atual
                 atual = atual.prox
-            
-            # Se nao tm mais prioridades na lista, retorna e avisa
 
             if not atual:
-                # Reinicia a busca do primeiro normal na fila
-
+                # não achou prioridade ve se tem normal
                 atual = self.inicio
                 passado = None
                 while atual and atual.prioridade:
                     passado = atual
                     atual = atual.prox
-
-                if atual:           # se tem normal encontrou ele aqui
-                    self.quant_normal -=1
-                    self.total_atendidos_normal +=1            #a
-                    self.quant_atendido_prioridade = 0          # Reseta o contador para a proxima vez que tiverr prioridad
-
-                else:                           
+                if not atual:
+                    print("\nFila vazia!")
                     return
                 
-            else:               # Encontrou uma pessoa de prioridade
-                self.quant_prioridade -= 1
-                self.quant_atendido_prioridade +=1
-                self.total_atendidos_prioridade +=1            #a
-        
-        else:                   # Caso contrario, atende uma pessoa normal
-            # acha o primeiro cliente normal da fila
+                
+        else:
+            # preefeerencia em nromal
             while atual and atual.prioridade:
                 passado = atual
                 atual = atual.prox
-            
-            if not atual:                       # Não ha pessoas normais na fila. Procura por prioridade para atender.
-                print("\nSem clientes normais para atender")
 
-                # Reinicia a busca do primeiro prioridade na fila
+            if not atual:
+                # não achou normal ve se ter prioridade
                 atual = self.inicio
                 passado = None
                 while atual and not atual.prioridade:
                     passado = atual
                     atual = atual.prox
-
-                if atual:                   # Encontrou um prioridade
-                    self.quant_prioridade -= 1
-                    self.quant_atendido_prioridade += 1
-                    self.total_atendidos_prioridade += 1        #a
-
-                else:
+                if not atual:
                     print("\nFila vazia!")
                     return
 
-            else: # Encontrou uma pessoa normal para atender
-                self.quant_normal -= 1
-                self.total_atendidos_normal += 1                #a
-                self.quant_atendido_prioridade = 0 # Reseta o contador de prioridade, porque atendeu 1u normal
+
+        # Atualiza contadores conforme o tipo atendido
+        if atual.prioridade:
+            self.quant_prioridade -= 1
+            self.total_atendidos_prioridade += 1
+
+
+            # zera o ciclo de normais após uma prioridade
+            self.normais_desde_ultima_prioridade = 0
+
+           
+            self.quant_atendido_prioridade = 1
+        else:
+            self.quant_normal -= 1
+            self.total_atendidos_normal += 1
+            # incrementa quantos normais desde a última prioridade, e no max dois normais ai vai prioridade denvoo
+
+            self.normais_desde_ultima_prioridade = min(self.normais_desde_ultima_prioridade + 1, 2)
+            
+
+            self.quant_atendido_prioridade = 0
+
+
 
         # aqui e a parte de remocoes da lista
 
@@ -157,4 +161,4 @@ class Lista:
         print("\n-Estatísticas dos Atendimentos-")
         print(f"Pessoas com prioridade atendidas: {self.total_atendidos_prioridade}")
         print(f"Pessoas normais atendidas: {self.total_atendidos_normal}")
-        print("\n-------====-----===------------=====---")
+        print("\n-------====-----===------------=====")
