@@ -157,8 +157,11 @@ class Lista:
 
 
     def estatisticas_finais(self):  
+        total = self.total_atendidos_normal + self.total_atendidos_prioridade
+        percent_atend_normal = (self.total_atendidos_normal/total) * 100
+        percent_atend_prioridade = (self.total_atendidos_prioridade/total) * 100
         print("\n-----===-------====---=======--=-")
         print("\n-Estatísticas dos Atendimentos-")
-        print(f"Pessoas com prioridade atendidas: {self.total_atendidos_prioridade}")
-        print(f"Pessoas normais atendidas: {self.total_atendidos_normal}")
+        print(f"Pessoas com prioridade atendidas: {self.total_atendidos_prioridade} | {percent_atend_prioridade:.2f}% do Total")
+        print(f"Pessoas normais atendidas: {self.total_atendidos_normal} | {percent_atend_normal:.2f}% do Total")
         print("\n-------====-----===------------=====")
