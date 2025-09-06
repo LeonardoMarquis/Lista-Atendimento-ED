@@ -12,10 +12,10 @@ class Node:     # o chamado nó da lista encadeada, vai representar a pessoa
 class Lista:
     def __init__(self):
         self.inicio = None
-        self.fim = None
+        self.fim = None 
 
         self.quant_prioridade = 0
-        self.quant_atendido_prioridade = 0
+        
         
         self.quant_normal = 0
 
@@ -107,7 +107,7 @@ class Lista:
             self.normais_desde_ultima_prioridade = 0
 
            
-            self.quant_atendido_prioridade = 1
+             
         else:
             self.quant_normal -= 1
             self.total_atendidos_normal += 1
@@ -116,7 +116,7 @@ class Lista:
             self.normais_desde_ultima_prioridade = min(self.normais_desde_ultima_prioridade + 1, 2)
             
 
-            self.quant_atendido_prioridade = 0
+            
 
 
 
